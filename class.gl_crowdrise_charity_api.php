@@ -1,7 +1,13 @@
 <?php
 class gl_crowdrise_charity_api
 {
-	public function _construct()
+	public $username;
+	public $password;
+	public $api_key;
+	public $api_token;
+	public $url_charity_count;
+
+	public function __construct()
 	{
 		$this->username = '';
 		$this->password = '';
@@ -35,11 +41,11 @@ class gl_crowdrise_charity_api
 
 			if(! empty($response))
 			{
-				$result = json_decode($response);
+				$result = json_decode($response, true);
 
 				if(! empty($result['result']))
 				{
-					$charity_count = preg_replace('~[^0-9]~', '', $result['result']);
+					$charity_count = preg_replace('~[^0-9]~', '', $result['result'][0]['donation_count']);
 				}
 			}
 		}
@@ -52,7 +58,7 @@ class gl_crowdrise_charity_api
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-		curl_setopt($ch, CURLOPT_VERBOSE, false);
+		curl_setopt($ch, CURLOPT_VERBOSE, true);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
 		curl_setopt($ch, CURLOPT_TIMEOUT, 10);
@@ -65,7 +71,7 @@ class gl_crowdrise_charity_api
 		return $response;
 	}
 
-	public function _destruct()
+	public function __destruct()
 	{
 	}
 }

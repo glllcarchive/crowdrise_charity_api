@@ -1,16 +1,19 @@
 # crowdrise_charity_api
-simple class for crowdrise charity api
+simple class for the crowdrise charity api
 
-example:
+## examples:
+
+```php
 include('class.gl_crowdrise_charity_api.php');
 
 $charity = new gl_crowdrise_charity_api();
 
-$charity->api_key = '';
+$charity->api_key   = '';
 $charity->api_token = '';
 
-$time_from = strtotime('1980-01-01');
+$time_from = strtotime("2010-01-01 00:00:00");
 
-$donation_count = $charity->get_charity_donation_count($time_from);
+$total_donation_amount = $charity->get_total_donation_amount($time_from);
 
-echo $donation_count;
+echo number_format(round($total_donation_amount), 0);
+```

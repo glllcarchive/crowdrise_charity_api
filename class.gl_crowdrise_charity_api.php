@@ -35,15 +35,25 @@ class gl_crowdrise_charity_api
 	*
 	* @param string timestamp $time_from
 	* @param string timestamp $time_to
+	*
+	* @return int $total the total donation amount or false if the first parameter is not valid
 	*/
 	public function get_total_donation_amount($time_from = '', $time_to = '')
 	{
+		//the from time is the only requirement
+		if(empty($time_from))
+		{
+			$this->error_stack[] = __CLASS__ . ' ' . __FUNCTION__ . " please pass a from date";
+
+			return false;
+		}
+
 		if(empty($time_to))
 		{
 			$time_to = time();
 		}
 
-		//total count of donations requested wihch should match $donation_count if a total donation amount is desired.
+		//total count of donations requested which should match $donation_count if a total donation amount is desired.
 		$the_total_count = 0;
 
 		/**
@@ -89,7 +99,7 @@ class gl_crowdrise_charity_api
 				}
 				else
 				{
-					$this->error_stack[] = "skipped offset $chunk_current_offset";
+					$this->error_stack[] = __CLASS__ . ' ' . __FUNCTION__ . " skipped offset $chunk_current_offset";
 				}
 
 				//bump the offset up a notch
@@ -193,7 +203,7 @@ class gl_crowdrise_charity_api
 
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-		curl_setopt($ch, CURLOPT_VERBOSE, true);
+		curl_setopt($ch, CURLOPT_VERBOSE, $this->flag_debug);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $this->api_timeout);
 		curl_setopt($ch, CURLOPT_TIMEOUT, $this->api_timeout);

@@ -192,7 +192,7 @@ class gl_crowdrise_charity_api
 		return $charity_count;
 	}
 
-	public function gl_call_endpoint($url = "", $post_vars = array(), &$error)
+	public function gl_call_endpoint($url = "", $post_vars = array(), &$error = '')
 	{
 		$ch = curl_init();
 
